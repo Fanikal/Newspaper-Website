@@ -1,4 +1,4 @@
-# Newspaper-Website README
+# README
 
 This project was created as part of the "Programming of User Interfaces" course at the Universidad Politécnica de Madrid, using Angular CLI version 14.2.2.
 
