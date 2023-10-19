@@ -1,0 +1,15 @@
+@media only screen and (max-width: 634px) {
+    .btnLogin {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .btnLogout {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+    }
+}

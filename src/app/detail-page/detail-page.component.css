@@ -1,0 +1,9 @@
+.imgDiv {
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.p-subtitle {
+    font-size: 30px;
+}

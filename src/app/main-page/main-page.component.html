@@ -1,0 +1,133 @@
+<app-navbar [canGoBack]="false"></app-navbar>
+
+<notifier-container></notifier-container>
+
+<section id="content">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white mb-3">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button"
+                    (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
+                <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse row justify-content-between">
+                    <div class="col-auto my-2">
+                        <div class="btn-group">
+                            <div *ngFor="let category of filterCategories; let i = index;">
+                                <input type="radio" class="btn-check" name="categoryFilters" id="categoryFilter{{i}}"
+                                    value="{{category.name}}" [(ngModel)]="selectedCategory"
+                                    (change)="getAllArticles();" />
+                                <label class="btn btn-sm btn-light mx-1"
+                                    for="categoryFilter{{i}}">{{category.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto my-2">
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="input-group">
+                                    <input type="text" class="form-control py-2 border-right-0 border"
+                                        placeholder="Keyword" [(ngModel)]="keyword" name="keyword">
+                                    <button type="button" (click)="clearInput()"
+                                        class="input-group-text bg-transparent">
+                                        <fa-icon *ngIf="keyword != undefined" [icon]="['fas', 'times']"></fa-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-primary d-inline"
+                                    (click)="getAllArticles()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto" *ngIf="isLogged()">
+                        <button type="button" class="btn btn-outline-primary d-inline" [routerLink]="['/create/']"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Create article">
+                            <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                            &nbsp;Create
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- <button>Add new article</button> -->
+        <div class="row justify-content-evenly">
+            <div *ngFor="let article of articlesList; let i = index;" class="my-2 col-lg-4 same-height">
+                <ng-container [ngTemplateOutlet]="infoNews" [ngTemplateOutletContext]="{articleElement:article}">
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--Template with the content of a card-->
+<ng-template #infoNews let-article='articleElement'>
+    <div class="d-flex article-container flex-column">
+        <div class="col">
+            <div class="row">
+                <div class="col-auto">
+                    <a [routerLink]="['/detail/', article.id]">
+                        <img *ngIf="article.thumbnail_image != undefined" class="img-responsive article-image"
+                            src="data:{{article.thumbnail_media_type}};base64,{{article.thumbnail_image}}"
+                            alt="Image of the article">
+                        <fa-icon *ngIf="article.thumbnail_image == undefined" [icon]="['fas', 'image']" size="7x" style="color: #757575"></fa-icon>
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <span class="badge text-bg-danger my-2">{{article.category}}</span>
+                </div>
+            </div>
+            <br>
+            <span class="text-summary" style="font-size: 12px;">{{article.update_date | date:'short'}}</span>
+            <br>
+            <a class="enter-details" [routerLink]="['/detail/', article.id]">
+                <span class="bold-small">{{article.title}}</span>
+            </a>
+            <br>
+            <span class="text-summary" style="font-size: 14px;">{{article.subtitle}}</span>
+            <hr>
+            <span class="text-summary" style="font-size: 14px;" [innerHTML]="article.abstract"></span>
+            <br>
+        </div>
+        <div class="row mt-auto mt-4" style="text-align: right;">
+            <div class="col-auto mt-auto" *ngIf="isLogged()">
+                <button class="btn btn-sm btn-outline-secondary rounded-2 mt-1" type="button"
+                    [routerLink]="['/edit/', article.id]">
+                    <fa-icon [icon]="['fas', 'pen-to-square']"></fa-icon>
+                    &nbsp;Modify
+                </button>
+            </div>
+            <div class="col-auto mt-auto" *ngIf="isLogged()">
+                <button class="btn btn-sm btn-outline-danger rounded-2" (click)="openModal(mymodal, article.id)">
+                    <fa-icon [icon]="['fas', 'trash']"></fa-icon> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!--Delete modal-->
+<ng-template #mymodal let-modal let-id>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Delete article</h5>
+            <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" (click)="modal.close()">
+                    <fa-icon [icon]="['fas', 'times']"></fa-icon>
+                </span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>
+                Are you sure you want to delete the article? <br />
+                By clicking "Confirm" you agree that you want to delete the item.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="removeArticle(modal)">Confirm</button>
+        </div>
+    </div>
+</ng-template>
+
+<app-footer></app-footer>
