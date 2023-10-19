@@ -8,7 +8,7 @@ This project was created as part of the "Programming of User Interfaces" course 
 3. [Running the Project](#running-the-project)
 
 ## Project Overview
-The project is an online newspaper that displays news (national, sports etc) - users can filter by category, view the articles as well ad modify the articles' information (only for certain registered users).
+The project is an online newspaper that displays news (national, sports etc) - users can filter by category, view the articles as well as modify the articles' information (only for certain registered users).
 
 ## Installation
 
